@@ -174,13 +174,13 @@ namespace RVO
             agent.id = stotalID;
             stotalID++;
             agent.maxNeighbors = defaultAgent.maxNeighbors;
-            agent.maxSpeed = defaultAgent.maxSpeed * priority;
+            agent.maxSpeed = defaultAgent.maxSpeed ; 
             agent.neighborDist = defaultAgent.neighborDist;
             agent.position = position;
             agent.radius = defaultAgent.radius;
             agent.timeHorizon = defaultAgent.timeHorizon;
             agent.timeHorizonObst = defaultAgent.timeHorizonObst;
-            agent.velocity = defaultAgent.velocity * priority;
+            agent.velocity = defaultAgent.velocity ;
             agent.layer = layer;
             agent.colliderWith = collideWith;
             agent.priority = priority;

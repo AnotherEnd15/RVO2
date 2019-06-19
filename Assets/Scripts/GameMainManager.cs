@@ -66,7 +66,9 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
     void CreatAgent(RVOLayer layer,RVOLayer collideWith,int priority = 1)
     {
         int sid = Simulator.Instance.addAgent(mousePosition, layer, collideWith, priority);
-       // Simulator.Instance.setAgentMaxSpeed(sid, Simulator.Instance.getAgentMaxSpeed(sid) * priority);
+        Simulator.Instance.setAgentMaxSpeed(sid, Simulator.Instance.getAgentMaxSpeed(sid) * priority);
+        Simulator.Instance.setAgentVelocity(sid, Simulator.Instance.getAgentVelocity(sid) * priority);
+        Simulator.Instance.setAgentRadius(sid, Simulator.Instance.getAgentRadius(sid) * priority);
         if (sid >= 0)
         {
             GameObject go = LeanPool.Spawn(agentPrefab, new Vector3(mousePosition.x, 0, mousePosition.y), Quaternion.identity);

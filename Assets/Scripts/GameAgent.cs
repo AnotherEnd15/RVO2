@@ -27,7 +27,6 @@ public class GameAgent : MonoBehaviour
             transform.position = new Vector3(pos.x, transform.position.y, pos.y);
             if (Math.Abs(vel.x) > 0.01f && Math.Abs(vel.y) > 0.01f)
                 transform.forward = new Vector3(vel.x, 0, vel.y).normalized;
-            Debug.Log("Priority " + Simulator.Instance.getAgentPriority(sid));
             if (Simulator.Instance.getAgentPriority(sid) > 1)
                 Debug.Log("Count " + Simulator.Instance.getAgentNumAgentNeighbors(sid));
         }
@@ -46,12 +45,12 @@ public class GameAgent : MonoBehaviour
 
         Simulator.Instance.setAgentPrefVelocity(sid, goalVector);
 
-        ///* Perturb a little to avoid deadlocks due to perfect symmetry. */
-        //float angle = (float) mrandom.NextDouble()*2.0f*(float) Math.PI;
-        //float dist = (float) mrandom.NextDouble()*0.0001f;
+        /* Perturb a little to avoid deadlocks due to perfect symmetry. */
+        float angle = (float)mrandom.NextDouble() * 2.0f * (float)Math.PI;
+        float dist = (float)mrandom.NextDouble() * 0.0001f;
 
-        //Simulator.Instance.setAgentPrefVelocity(sid, Simulator.Instance.getAgentPrefVelocity(sid) +
-        //                                             dist*
-        //                                             new Vector3((float) Math.Cos(angle), (float) Math.Sin(angle)));
+        Simulator.Instance.setAgentPrefVelocity(sid, Simulator.Instance.getAgentPrefVelocity(sid) +
+                                                     dist *
+                                                     new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle)));
     }
 }
