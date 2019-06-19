@@ -475,8 +475,12 @@ namespace RVO
         {
             // 如果不考虑和对应单位的碰撞,这里就移除
             if (this == agent || (agent.layer & this.colliderWith) == 0) return;
-            //如果本身优先级大于对方,就不把对方当障碍
-            if (this.priority > agent.priority) return;
+            //同层级的东西才考虑优先级.
+            //如果 本身优先级大于对方,就不把对方当障碍.表现为低优先级的会给高优先级的让路
+            if (this.layer == agent.layer)
+            {
+                if (this.priority > agent.priority) return;
+            }
 
             float distSq = RVOMath.absSq(position - agent.position);
 

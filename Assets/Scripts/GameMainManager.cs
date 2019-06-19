@@ -63,17 +63,17 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
             magentMap.Add(sid, ga);
         }
     }
-    void CreatAgent(RVOLayer layer,RVOLayer collideWith,int priority = 1)
+    void CreatAgent(RVOLayer layer,RVOLayer collideWith,int priority, Color color,int speedMul,int radiusMul)
     {
         int sid = Simulator.Instance.addAgent(mousePosition, layer, collideWith, priority);
-        Simulator.Instance.setAgentMaxSpeed(sid, Simulator.Instance.getAgentMaxSpeed(sid) * priority);
-        Simulator.Instance.setAgentVelocity(sid, Simulator.Instance.getAgentVelocity(sid) * priority);
-        Simulator.Instance.setAgentRadius(sid, Simulator.Instance.getAgentRadius(sid) * priority);
+        Simulator.Instance.setAgentMaxSpeed(sid, Simulator.Instance.getAgentMaxSpeed(sid) * speedMul);
+        Simulator.Instance.setAgentVelocity(sid, Simulator.Instance.getAgentVelocity(sid) * speedMul);
+        Simulator.Instance.setAgentRadius(sid, Simulator.Instance.getAgentRadius(sid) * radiusMul);
         if (sid >= 0)
         {
             GameObject go = LeanPool.Spawn(agentPrefab, new Vector3(mousePosition.x, 0, mousePosition.y), Quaternion.identity);
             GameAgent ga = go.GetComponent<GameAgent>();
-            go.GetComponentInChildren<MeshRenderer>().material.color = priority == 1 ? Color.white : Color.red; 
+            go.GetComponentInChildren<MeshRenderer>().material.color = color; 
             Assert.IsNotNull(ga);
             ga.sid = sid;
             magentMap.Add(sid, ga);
@@ -88,19 +88,22 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("创建默认层");
-            CreatAgent(RVOLayer.DefaultAgent, ~RVOLayer.Layer2);
+            //避让所有层
+            CreatAgent(RVOLayer.DefaultAgent, RVOLayer.AllLayer,1,Color.white,1,1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("创建第二层");
-            CreatAgent(RVOLayer.Layer2, ~RVOLayer.DefaultAgent);
+            // 不避让默认层
+            CreatAgent(RVOLayer.Layer2, ~RVOLayer.DefaultAgent, 1, Color.green,2,1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("创建默认层");
-            CreatAgent(RVOLayer.DefaultAgent, ~RVOLayer.Layer2,2);
+            //同层级的单位,优先级决定谁避让谁,谁无视谁
+            CreatAgent(RVOLayer.DefaultAgent, RVOLayer.AllLayer, 2, Color.red,3,2);
         }
 
         Simulator.Instance.doStep();
